@@ -34,8 +34,8 @@ class Command(BaseCommand):
 
         source_students = User.objects.filter(courseenrollment__course_id=source)
 
-        for student in source_students:
+        for user in source_students:
             # Get enrollement mode.
-            mode = CourseEnrollment.enrollment_mode_for_user(student, source)
+            mode = CourseEnrollment.enrollment_mode_for_user(user, source)
             CourseEnrollment.unenroll(user,source)
             CourseEnrollment.enroll(user, dest, mode=mode)
