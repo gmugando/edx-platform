@@ -37,6 +37,7 @@ class Command(BaseCommand):
         source_students = source_students.filter(courseenrollment__is_active=True)
 
         for user in source_students:
+            print("Moving {}.".format(user.username))
             # Find the old enrollment.
             enrollment = CourseEnrollment.objects.get(user=user, course_id=source)
             # Move the Student between the classes.
