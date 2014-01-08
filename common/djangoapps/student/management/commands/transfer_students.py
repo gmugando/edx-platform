@@ -2,6 +2,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
+from shoppingcart.models import CertificateItem
 
 
 class Command(BaseCommand):
