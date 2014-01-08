@@ -144,8 +144,8 @@ FEATURES = {
     # Enables the student notes API and UI.
     'ENABLE_STUDENT_NOTES': True,
 
-    # Provide a UI to allow users to submit feedback from the LMS
-    'ENABLE_FEEDBACK_SUBMISSION': False,
+    # Provide a UI to allow users to submit feedback from the LMS (left-hand help modal)
+    'ENABLE_FEEDBACK_SUBMISSION': True,
 
     # Turn on a page that lets staff enter Python code to be run in the
     # sandbox, for testing whether it's enabled properly.
