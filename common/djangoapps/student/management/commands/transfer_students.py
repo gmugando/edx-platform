@@ -1,8 +1,8 @@
 from optparse import make_option
 from django.core.management.base import BaseCommand
-from student.models import CourseEnrollment
 from django.contrib.auth.models import User
-from shoppingcart.models import CertificateItem, DoesNotExist
+from student.models import CourseEnrollment
+from shoppingcart.models import CertificateItem
 
 
 class Command(BaseCommand):
@@ -48,7 +48,8 @@ class Command(BaseCommand):
                 try:
                     certificate_item = CertificateItem.objects.get(course_id=source,
                         course_enrollment=enrollment)
-                except DoesNotExist as e:
+                except CertificateItem.DoesNotExist:
+                    print("No certificate for {}".format(user))
                     continue
 
                 new_enrollment = CourseEnrollment.objects.get(user=user,
