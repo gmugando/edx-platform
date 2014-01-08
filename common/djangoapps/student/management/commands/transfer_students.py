@@ -33,9 +33,22 @@ class Command(BaseCommand):
         dest = options['dest_course']
 
         source_students = User.objects.filter(courseenrollment__course_id=source)
+        source_students = source_students.filter(courseenrollment__is_active=True)
 
         for user in source_students:
-            # Get enrollement mode.
-            mode = CourseEnrollment.enrollment_mode_for_user(user, source)
+            # Find the old enrollment.
+            enrollment = CourseEnrollment.objects.get(user=user, course_id=source)
+            # Move the Student between the classes.
+            mode = enrollment.mode
             CourseEnrollment.unenroll(user,source)
             CourseEnrollment.enroll(user, dest, mode=mode)
+
+            if mode == 'verified':
+                certificate_item = CertificateItem.objects.get(course_id=source,
+                    course_enrollment=enrollment)
+                new_enrollment = CourseEnrollment.objects.get(user=user,
+                    course_id=dest)
+
+                certificate_item.course_id = dest
+                certificate_item.course_enrollment = new_enrollment
+                certificate_item.save()
