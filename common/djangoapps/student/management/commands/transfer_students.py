@@ -2,7 +2,7 @@ from optparse import make_option
 from django.core.management.base import BaseCommand
 from student.models import CourseEnrollment
 from django.contrib.auth.models import User
-from shoppingcart.models import CertificateItem
+from shoppingcart.models import CertificateItem, DoesNotExist
 
 
 class Command(BaseCommand):
@@ -45,8 +45,12 @@ class Command(BaseCommand):
             CourseEnrollment.enroll(user, dest, mode=mode)
 
             if mode == 'verified':
-                certificate_item = CertificateItem.objects.get(course_id=source,
-                    course_enrollment=enrollment)
+                try:
+                    certificate_item = CertificateItem.objects.get(course_id=source,
+                        course_enrollment=enrollment)
+                except DoesNotExist as e:
+                    continue
+
                 new_enrollment = CourseEnrollment.objects.get(user=user,
                     course_id=dest)
 
